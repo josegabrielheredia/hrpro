@@ -7,11 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import AsistenciaForm, CandidatoForm, EmpleadoForm, NominaForm
 from .models import Asistencia, Candidato, Empleado, Nomina
 
 
+@csrf_exempt
 def crear_admin_seguro(request):
     if request.method != 'POST':
         return HttpResponse('Metodo no permitido', status=405)
