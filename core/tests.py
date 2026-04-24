@@ -4,6 +4,9 @@ from unittest.mock import patch
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+from .forms import EmpleadoForm
+from .models import Departamento, Empleado
+
 
 class CrearAdminSeguroViewTests(TestCase):
     url = '/crear-admin-seguro/'
@@ -44,3 +47,49 @@ class CrearAdminSeguroViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content.decode(), 'Superusuario creado correctamente')
         self.assertTrue(User.objects.filter(username='admin', is_superuser=True).exists())
+
+
+class EmpleadoFormDepartamentoTests(TestCase):
+    def test_crea_departamento_nuevo_si_no_existe(self):
+        form = EmpleadoForm(data={
+            'nombre': 'Ana',
+            'apellido': 'Lopez',
+            'cedula': '001-0000000-1',
+            'departamento': '',
+            'cargo': 'Analista',
+            'email': 'ana@example.com',
+            'telefono': '8090000001',
+            'fecha_ingreso': '2026-04-24',
+            'estado': 'ACTIVO',
+            'expediente': '',
+            'nuevo_departamento': 'Tecnologia',
+        })
+
+        self.assertTrue(form.is_valid(), form.errors)
+        empleado = form.save()
+        self.assertEqual(empleado.departamento.nombre, 'Tecnologia')
+        self.assertEqual(Departamento.objects.filter(nombre='Tecnologia').count(), 1)
+
+    def test_reutiliza_departamento_existente_sin_duplicar(self):
+        departamento = Departamento.objects.create(nombre='Finanzas')
+
+        form = EmpleadoForm(data={
+            'nombre': 'Luis',
+            'apellido': 'Garcia',
+            'cedula': '001-0000000-2',
+            'departamento': '',
+            'cargo': 'Contador',
+            'email': 'luis@example.com',
+            'telefono': '8090000002',
+            'fecha_ingreso': '2026-04-24',
+            'estado': 'ACTIVO',
+            'expediente': '',
+            'nuevo_departamento': 'finanzas',
+        })
+
+        self.assertTrue(form.is_valid(), form.errors)
+        empleado = form.save()
+
+        self.assertEqual(empleado.departamento.id, departamento.id)
+        self.assertEqual(Departamento.objects.filter(nombre__iexact='finanzas').count(), 1)
+        self.assertTrue(Empleado.objects.filter(id=empleado.id).exists())

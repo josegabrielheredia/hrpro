@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HRPro - {% block title %}Panel{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'dashboard' %}">HRPro</a>
+        <a class="navbar-brand hr-navbar-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'img/hrpro-logo.png' %}" alt="HRPro" class="hr-navbar-logo">
+            <span>HRPro</span>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -19,7 +23,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'empleado_list' %}">Empleados</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'asistencia_list' %}">Asistencia</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'nomina_list' %}">Nómina</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'nomina_list' %}">Nomina</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'candidato_list' %}">Reclutamiento</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'reportes' %}">Reportes</a></li>
             </ul>
@@ -28,13 +32,13 @@
                 <li class="nav-item"><span class="nav-link">{{ request.user.username }}</span></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Salir</a></li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesion</a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </nav>
-<div class="container my-4">
+<main class="{% block main_class %}container my-4{% endblock %}">
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -44,8 +48,8 @@
         {% endfor %}
     {% endif %}
     {% block content %}{% endblock %}
-</div>
+</main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-<script src="/static/js/scripts.js"></script>
+<script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

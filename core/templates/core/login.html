@@ -1,24 +1,45 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block main_class %}container-fluid px-3 px-lg-4 py-4 py-lg-5{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5">
-        <div class="card shadow-sm">
+<div class="row g-4 g-xl-5 align-items-stretch justify-content-center login-layout">
+    <div class="col-xl-5 col-lg-6 d-none d-lg-block">
+        <section class="login-brand-panel h-100">
+            <img src="{% static 'img/hrpro-logo.png' %}" alt="Logo HRPro" class="login-brand-logo">
+            <h2>Gestion integral para tu equipo</h2>
+            <p>Controla empleados, asistencia, nomina, reclutamiento y reportes desde un solo lugar.</p>
+            <div class="login-brand-points">
+                <span>Panel centralizado</span>
+                <span>Flujo rapido de RRHH</span>
+                <span>Seguimiento en tiempo real</span>
+            </div>
+        </section>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-9 col-sm-11">
+        <div class="card shadow-sm hr-form-card login-card h-100">
+            <div class="card-header hr-form-card-header login-card-header">
+                <img src="{% static 'img/hrpro-logo.png' %}" alt="Logo HRPro" class="login-card-logo">
+                <div>
+                    <h4 class="card-title mb-1">Bienvenido</h4>
+                    <p class="mb-0 text-muted">Inicia sesion para continuar</p>
+                </div>
+            </div>
             <div class="card-body">
-                <h4 class="card-title mb-4">Iniciar sesión</h4>
-                <form method="post">
+                <form method="post" class="login-form">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Usuario</label>
-                        <input class="form-control" name="username" required>
+                        <input class="form-control" name="username" placeholder="Tu usuario" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
-                        <input class="form-control" name="password" type="password" required>
+                    <div class="mb-4">
+                        <label class="form-label">Contrasena</label>
+                        <input class="form-control" name="password" type="password" placeholder="Tu contrasena" required>
                     </div>
-                    <button class="btn btn-primary w-100">Entrar</button>
+                    <button class="btn btn-primary w-100 login-submit">Entrar al panel</button>
                 </form>
             </div>
         </div>

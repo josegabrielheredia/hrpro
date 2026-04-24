@@ -1,0 +1,29 @@
+{% if form.non_field_errors %}
+<div class="alert alert-danger py-2">
+    {% for error in form.non_field_errors %}
+    <div>{{ error }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="hr-form-grid">
+    {% for field in form.visible_fields %}
+    <div class="hr-form-field {% if field.field.widget.input_type == 'textarea' %}hr-form-field-full{% endif %}">
+        <label class="form-label" for="{{ field.id_for_label }}">
+            {{ field.label }}
+            {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+        </label>
+        {{ field }}
+        {% if field.help_text %}
+        <div class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
