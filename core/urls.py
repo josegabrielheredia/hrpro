@@ -13,6 +13,16 @@ urlpatterns = [
     path('empleados/<int:pk>/eliminar/', views.empleado_delete, name='empleado_delete'),
     path('empleados/<int:pk>/', views.empleado_detail, name='empleado_detail'),
 
+    path('departamentos/', views.departamento_list, name='departamento_list'),
+    path('departamentos/crear/', views.departamento_create, name='departamento_create'),
+    path('departamentos/<int:pk>/editar/', views.departamento_edit, name='departamento_edit'),
+    path('departamentos/<int:pk>/eliminar/', views.departamento_delete, name='departamento_delete'),
+
+    path('cargos/', views.cargo_list, name='cargo_list'),
+    path('cargos/crear/', views.cargo_create, name='cargo_create'),
+    path('cargos/<int:pk>/editar/', views.cargo_edit, name='cargo_edit'),
+    path('cargos/<int:pk>/eliminar/', views.cargo_delete, name='cargo_delete'),
+
     path('asistencia/', views.asistencia_list, name='asistencia_list'),
     path('asistencia/crear/', views.asistencia_create, name='asistencia_create'),
     path('asistencia/<int:pk>/editar/', views.asistencia_edit, name='asistencia_edit'),

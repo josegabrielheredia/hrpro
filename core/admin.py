@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Departamento, Empleado, Asistencia, Nomina, Candidato, Evaluacion
+from .models import Asistencia, Candidato, Cargo, Departamento, Empleado, Evaluacion, Nomina
 
 
 @admin.register(Departamento)
@@ -8,9 +8,15 @@ class DepartamentoAdmin(admin.ModelAdmin):
     search_fields = ('nombre',)
 
 
+@admin.register(Cargo)
+class CargoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'descripcion')
+    search_fields = ('nombre',)
+
+
 @admin.register(Empleado)
 class EmpleadoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'apellido', 'cedula', 'departamento', 'cargo', 'estado')
+    list_display = ('nombre', 'apellido', 'cedula', 'departamento', 'cargo', 'sueldo_mensual_dop', 'estado')
     search_fields = ('nombre', 'apellido', 'cedula', 'cargo')
     list_filter = ('departamento', 'estado')
 

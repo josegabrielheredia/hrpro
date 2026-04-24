@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Departamentos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Departamentos</h2>
+    <a class="btn btn-primary" href="{% url 'departamento_create' %}">Nuevo departamento</a>
+</div>
+<form method="get" class="mb-3 row g-2">
+    <div class="col-md-8">
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Buscar por nombre o descripcion">
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-outline-secondary w-100">Buscar</button>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for departamento in departamentos %}
+                <tr>
+                    <td>{{ departamento.nombre }}</td>
+                    <td>{{ departamento.descripcion|default:'-' }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'departamento_edit' departamento.pk %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'departamento_delete' departamento.pk %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3" class="text-center">No hay departamentos registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

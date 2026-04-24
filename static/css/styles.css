@@ -112,6 +112,56 @@ body {
     font-size: 0.82rem;
 }
 
+.inline-manage-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.inline-manage-row .form-select {
+    flex: 1;
+}
+
+.inline-manage-toggle {
+    width: 2.45rem;
+    height: 2.45rem;
+    border-radius: 0.65rem;
+    font-size: 1.35rem;
+    line-height: 1;
+    padding: 0;
+}
+
+.inline-manage-panel {
+    margin-top: 0.75rem;
+    padding: 0.95rem;
+    border: 1px dashed #b8d3ee;
+    border-radius: 0.8rem;
+    background: #f7fbff;
+    display: none;
+}
+
+.inline-manage-panel.is-open {
+    display: block;
+}
+
+.inline-manage-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.65rem;
+}
+
+.inline-manage-close {
+    color: #0f5b87;
+    text-decoration: none;
+}
+
+.inline-manage-close:hover,
+.inline-manage-close:focus {
+    color: #0b4f75;
+    text-decoration: underline;
+}
+
 .form-actions .btn {
     min-width: 9rem;
     border-radius: 0.65rem;

@@ -9,8 +9,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import AsistenciaForm, CandidatoForm, EmpleadoForm, NominaForm
-from .models import Asistencia, Candidato, Empleado, Nomina
+from .forms import AsistenciaForm, CandidatoForm, CargoForm, DepartamentoForm, EmpleadoForm, NominaForm
+from .models import Asistencia, Candidato, Cargo, Departamento, Empleado, Nomina
 
 
 @csrf_exempt
@@ -139,6 +139,92 @@ def empleado_detail(request, pk):
 
 
 @login_required
+def departamento_list(request):
+    query = request.GET.get('q', '')
+    departamentos = Departamento.objects.all()
+    if query:
+        departamentos = departamentos.filter(
+            Q(nombre__icontains=query) |
+            Q(descripcion__icontains=query)
+        )
+    return render(request, 'core/department_list.html', {'departamentos': departamentos, 'query': query})
+
+
+@login_required
+def departamento_create(request):
+    form = DepartamentoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Departamento creado correctamente.')
+        return redirect('departamento_list')
+    return render(request, 'core/department_form.html', {'form': form, 'title': 'Crear departamento'})
+
+
+@login_required
+def departamento_edit(request, pk):
+    departamento = get_object_or_404(Departamento, pk=pk)
+    form = DepartamentoForm(request.POST or None, instance=departamento)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Departamento actualizado correctamente.')
+        return redirect('departamento_list')
+    return render(request, 'core/department_form.html', {'form': form, 'title': 'Editar departamento'})
+
+
+@login_required
+def departamento_delete(request, pk):
+    departamento = get_object_or_404(Departamento, pk=pk)
+    if request.method == 'POST':
+        departamento.delete()
+        messages.success(request, 'Departamento eliminado correctamente.')
+        return redirect('departamento_list')
+    return render(request, 'core/department_form.html', {'form': None, 'title': 'Eliminar departamento', 'object': departamento})
+
+
+@login_required
+def cargo_list(request):
+    query = request.GET.get('q', '')
+    cargos = Cargo.objects.all()
+    if query:
+        cargos = cargos.filter(
+            Q(nombre__icontains=query) |
+            Q(descripcion__icontains=query)
+        )
+    return render(request, 'core/cargo_list.html', {'cargos': cargos, 'query': query})
+
+
+@login_required
+def cargo_create(request):
+    form = CargoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Cargo creado correctamente.')
+        return redirect('cargo_list')
+    return render(request, 'core/cargo_form.html', {'form': form, 'title': 'Crear cargo'})
+
+
+@login_required
+def cargo_edit(request, pk):
+    cargo = get_object_or_404(Cargo, pk=pk)
+    form = CargoForm(request.POST or None, instance=cargo)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Cargo actualizado correctamente.')
+        return redirect('cargo_list')
+    return render(request, 'core/cargo_form.html', {'form': form, 'title': 'Editar cargo'})
+
+
+@login_required
+def cargo_delete(request, pk):
+    cargo = get_object_or_404(Cargo, pk=pk)
+    if request.method == 'POST':
+        cargo.delete()
+        messages.success(request, 'Cargo eliminado correctamente.')
+        return redirect('cargo_list')
+    return render(request, 'core/cargo_form.html', {'form': None, 'title': 'Eliminar cargo', 'object': cargo})
+
+
+@login_required
 def asistencia_list(request):
     query = request.GET.get('q', '')
     asistencias = Asistencia.objects.select_related('empleado').all()
@@ -200,10 +286,13 @@ def nomina_create(request):
     form = NominaForm(request.POST or None)
     if form.is_valid():
         form.save()
-        messages.success(request, 'Registro de nómina creado.')
+        messages.success(request, 'Registro de nomina creado.')
         return redirect('nomina_list')
-    return render(request, 'core/payroll_form.html', {'form': form, 'title': 'Registrar nómina'})
-
+    return render(request, 'core/payroll_form.html', {
+        'form': form,
+        'title': 'Registrar nomina',
+        'empleado_sueldo_map_json': getattr(form, 'empleado_sueldo_map_json', '{}'),
+    })
 
 @login_required
 def nomina_edit(request, pk):
@@ -211,10 +300,13 @@ def nomina_edit(request, pk):
     form = NominaForm(request.POST or None, instance=nomina)
     if form.is_valid():
         form.save()
-        messages.success(request, 'Nómina actualizada.')
+        messages.success(request, 'Nomina actualizada.')
         return redirect('nomina_list')
-    return render(request, 'core/payroll_form.html', {'form': form, 'title': 'Editar nómina'})
-
+    return render(request, 'core/payroll_form.html', {
+        'form': form,
+        'title': 'Editar nomina',
+        'empleado_sueldo_map_json': getattr(form, 'empleado_sueldo_map_json', '{}'),
+    })
 
 @login_required
 def nomina_delete(request, pk):
@@ -289,3 +381,5 @@ def reportes(request):
         'nominas_ultimas': nominas_ultimas,
         'candidatos_ultimos': candidatos_ultimos,
     })
+
+

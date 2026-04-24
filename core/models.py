@@ -14,6 +14,19 @@ class Departamento(models.Model):
         return self.nombre
 
 
+class Cargo(models.Model):
+    nombre = models.CharField(max_length=120, unique=True)
+    descripcion = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'Cargo'
+        verbose_name_plural = 'Cargos'
+
+    def __str__(self):
+        return self.nombre
+
+
 class Empleado(models.Model):
     ESTADO_CHOICES = [
         ('ACTIVO', 'Activo'),
@@ -26,6 +39,7 @@ class Empleado(models.Model):
     cedula = models.CharField(max_length=20, unique=True)
     departamento = models.ForeignKey(Departamento, on_delete=models.SET_NULL, null=True, blank=True)
     cargo = models.CharField(max_length=120)
+    sueldo_mensual_dop = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     email = models.EmailField(blank=True)
     telefono = models.CharField(max_length=30, blank=True)
     fecha_ingreso = models.DateField()

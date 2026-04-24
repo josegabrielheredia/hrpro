@@ -17,6 +17,7 @@
                     {% csrf_token %}
                     {% if form %}
                         {% include 'core/includes/unified_form_fields.html' with form=form %}
+                        <script id="empleado-sueldo-map" type="application/json">{{ empleado_sueldo_map_json|default:'{}'|safe }}</script>
                     {% endif %}
                     <div class="d-flex justify-content-between mt-4 form-actions">
                         <a class="btn btn-secondary" href="{% url 'nomina_list' %}">Volver</a>

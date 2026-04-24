@@ -4,18 +4,23 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-xl-9 col-lg-10">
+    <div class="col-xl-8 col-lg-9">
         <div class="card shadow-sm hr-form-card">
             <div class="card-header hr-form-card-header">
                 <h3 class="mb-0">{{ title }}</h3>
             </div>
             <div class="card-body">
+                {% if object %}
+                <div class="alert alert-warning">Estas a punto de eliminar este departamento.</div>
+                {% endif %}
                 <form method="post">
                     {% csrf_token %}
-                    {% include 'core/includes/employee_form_fields.html' with form=form %}
+                    {% if form %}
+                        {% include 'core/includes/unified_form_fields.html' with form=form %}
+                    {% endif %}
                     <div class="d-flex justify-content-between mt-4 form-actions">
-                        <a class="btn btn-secondary" href="{% url 'empleado_list' %}">Volver</a>
-                        <button class="btn btn-primary">Guardar</button>
+                        <a class="btn btn-secondary" href="{% url 'departamento_list' %}">Volver</a>
+                        <button class="btn btn-primary">{% if object and not form %}Confirmar{% else %}Guardar{% endif %}</button>
                     </div>
                 </form>
             </div>

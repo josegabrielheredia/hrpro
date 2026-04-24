@@ -1,0 +1,137 @@
+{% if form.non_field_errors %}
+<div class="alert alert-danger py-2">
+    {% for error in form.non_field_errors %}
+    <div>{{ error }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="hr-form-grid">
+    {% for field in form.visible_fields %}
+        {% if field.name == 'departamento' %}
+        <div class="hr-form-field">
+            <label class="form-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            <div class="inline-manage-row">
+                {{ field }}
+                <button
+                    type="button"
+                    class="btn btn-outline-primary inline-manage-toggle"
+                    data-inline-toggle="departamento"
+                    aria-controls="nuevo-departamento-panel"
+                    aria-expanded="false"
+                    title="Agregar departamento">
+                    +
+                </button>
+            </div>
+            {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% for error in field.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+
+            <div
+                id="nuevo-departamento-panel"
+                class="inline-manage-panel {% if form.nuevo_departamento.value or form.nuevo_departamento.errors or form.descripcion_nuevo_departamento.value or form.descripcion_nuevo_departamento.errors %}is-open{% endif %}"
+                data-inline-panel="departamento"
+                data-open="{% if form.nuevo_departamento.value or form.nuevo_departamento.errors or form.descripcion_nuevo_departamento.value or form.descripcion_nuevo_departamento.errors %}true{% else %}false{% endif %}">
+                <div class="inline-manage-panel-header">
+                    <strong>Crear nuevo departamento</strong>
+                    <button type="button" class="btn btn-sm btn-link p-0 inline-manage-close" data-inline-close="departamento">Usar existente</button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="{{ form.nuevo_departamento.id_for_label }}">{{ form.nuevo_departamento.label }}</label>
+                    {{ form.nuevo_departamento }}
+                    {% if form.nuevo_departamento.help_text %}
+                    <div class="form-text">{{ form.nuevo_departamento.help_text }}</div>
+                    {% endif %}
+                    {% for error in form.nuevo_departamento.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <label class="form-label" for="{{ form.descripcion_nuevo_departamento.id_for_label }}">{{ form.descripcion_nuevo_departamento.label }}</label>
+                    {{ form.descripcion_nuevo_departamento }}
+                    {% for error in form.descripcion_nuevo_departamento.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% elif field.name == 'cargo' %}
+        <div class="hr-form-field">
+            <label class="form-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            <div class="inline-manage-row">
+                {{ field }}
+                <button
+                    type="button"
+                    class="btn btn-outline-primary inline-manage-toggle"
+                    data-inline-toggle="cargo"
+                    aria-controls="nuevo-cargo-panel"
+                    aria-expanded="false"
+                    title="Agregar cargo">
+                    +
+                </button>
+            </div>
+            {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% for error in field.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+
+            <div
+                id="nuevo-cargo-panel"
+                class="inline-manage-panel {% if form.nuevo_cargo.value or form.nuevo_cargo.errors or form.descripcion_nuevo_cargo.value or form.descripcion_nuevo_cargo.errors %}is-open{% endif %}"
+                data-inline-panel="cargo"
+                data-open="{% if form.nuevo_cargo.value or form.nuevo_cargo.errors or form.descripcion_nuevo_cargo.value or form.descripcion_nuevo_cargo.errors %}true{% else %}false{% endif %}">
+                <div class="inline-manage-panel-header">
+                    <strong>Crear nuevo cargo</strong>
+                    <button type="button" class="btn btn-sm btn-link p-0 inline-manage-close" data-inline-close="cargo">Usar existente</button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="{{ form.nuevo_cargo.id_for_label }}">{{ form.nuevo_cargo.label }}</label>
+                    {{ form.nuevo_cargo }}
+                    {% if form.nuevo_cargo.help_text %}
+                    <div class="form-text">{{ form.nuevo_cargo.help_text }}</div>
+                    {% endif %}
+                    {% for error in form.nuevo_cargo.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <label class="form-label" for="{{ form.descripcion_nuevo_cargo.id_for_label }}">{{ form.descripcion_nuevo_cargo.label }}</label>
+                    {{ form.descripcion_nuevo_cargo }}
+                    {% for error in form.descripcion_nuevo_cargo.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% elif field.name != 'nuevo_departamento' and field.name != 'descripcion_nuevo_departamento' and field.name != 'nuevo_cargo' and field.name != 'descripcion_nuevo_cargo' %}
+        <div class="hr-form-field {% if field.field.widget.input_type == 'textarea' %}hr-form-field-full{% endif %}">
+            <label class="form-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ field }}
+            {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% for error in field.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% for hidden in form.hidden_fields %}
+{{ hidden }}
+{% endfor %}
