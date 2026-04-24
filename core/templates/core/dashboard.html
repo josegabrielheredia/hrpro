@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card border-primary shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Empleados</h5>
+                <p class="display-6">{{ resumen.empleados }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Asistencias</h5>
+                <p class="display-6">{{ resumen.asistencias }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-warning shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Nómina</h5>
+                <p class="display-6">{{ resumen.nominas }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Candidatos</h5>
+                <p class="display-6">{{ resumen.candidatos }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header">Últimos empleados</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for empleado in reciente_empleados %}
+                        <li class="list-group-item">{{ empleado }} - {{ empleado.cargo }}</li>
+                    {% empty %}
+                        <li class="list-group-item">No hay empleados registrados.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header">Últimas asistencias</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for asistencia in reciente_asistencias %}
+                        <li class="list-group-item">{{ asistencia.empleado }} - {{ asistencia.fecha }} - {{ asistencia.estado }}</li>
+                    {% empty %}
+                        <li class="list-group-item">No hay registros de asistencia.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

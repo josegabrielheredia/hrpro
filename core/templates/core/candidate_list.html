@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Reclutamiento{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Candidatos</h2>
+    <a class="btn btn-primary" href="{% url 'candidato_create' %}">Nuevo candidato</a>
+</div>
+<form method="get" class="mb-3 row g-2">
+    <div class="col-md-8">
+        <input name="q" value="{{ query }}" type="text" class="form-control" placeholder="Buscar por nombre, cédula o puesto">
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-outline-secondary w-100">Buscar</button>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>Puesto</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for candidato in candidatos %}
+                <tr>
+                    <td>{{ candidato }}</td>
+                    <td>{{ candidato.cedula }}</td>
+                    <td>{{ candidato.puesto }}</td>
+                    <td>{{ candidato.estado }}</td>
+                    <td>{{ candidato.fecha_postulacion }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'candidato_edit' candidato.pk %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'candidato_delete' candidato.pk %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-center">No hay candidatos registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

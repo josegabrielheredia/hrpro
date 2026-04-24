@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header"><h3>{{ title }}</h3></div>
+            <div class="card-body">
+                {% if object %}
+                    <div class="alert alert-warning">Estás a punto de eliminar este registro.</div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form %}
+                        {{ form.as_p }}
+                    {% endif %}
+                    <div class="d-flex justify-content-between mt-3">
+                        <a class="btn btn-secondary" href="{% url 'asistencia_list' %}">Volver</a>
+                        <button class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

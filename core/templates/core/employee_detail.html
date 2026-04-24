@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Detalle de empleado{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{ empleado }}</h2>
+    <div>
+        <a class="btn btn-secondary" href="{% url 'empleado_edit' empleado.pk %}">Editar</a>
+        <a class="btn btn-danger" href="{% url 'empleado_delete' empleado.pk %}">Eliminar</a>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Datos generales</h5>
+                <p><strong>Cédula:</strong> {{ empleado.cedula }}</p>
+                <p><strong>Departamento:</strong> {{ empleado.departamento }}</p>
+                <p><strong>Cargo:</strong> {{ empleado.cargo }}</p>
+                <p><strong>Correo:</strong> {{ empleado.email }}</p>
+                <p><strong>Teléfono:</strong> {{ empleado.telefono }}</p>
+                <p><strong>Ingreso:</strong> {{ empleado.fecha_ingreso }}</p>
+                <p><strong>Estado:</strong> {{ empleado.estado }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Expediente</h5>
+                <p>{{ empleado.expediente|default:'Sin información adicional.' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4 shadow-sm">
+    <div class="card-header">Historial de asistencia</div>
+    <div class="card-body table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in historial %}
+                    <tr>
+                        <td>{{ item.fecha }}</td>
+                        <td>{{ item.hora_entrada }}</td>
+                        <td>{{ item.hora_salida|default:'-' }}</td>
+                        <td>{{ item.estado }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4" class="text-center">No hay registros de asistencia.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if confirm_delete %}
+<div class="card mt-4 shadow-sm border-danger">
+    <div class="card-body">
+        <h5 class="card-title text-danger">Confirmar eliminación</h5>
+        <p>¿Seguro que deseas eliminar este empleado?</p>
+        <form method="post">
+            {% csrf_token %}
+            <a class="btn btn-secondary" href="{% url 'empleado_list' %}">Cancelar</a>
+            <button class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

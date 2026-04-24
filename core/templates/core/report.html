@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Reportes{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card border-primary shadow-sm">
+            <div class="card-body">
+                <h5>Empleados</h5>
+                <p class="display-6">{{ empleados }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success shadow-sm">
+            <div class="card-body">
+                <h5>Asistencias</h5>
+                <p class="display-6">{{ asistencias }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-warning shadow-sm">
+            <div class="card-body">
+                <h5>Nómina</h5>
+                <p class="display-6">{{ nominas }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info shadow-sm">
+            <div class="card-body">
+                <h5>Candidatos</h5>
+                <p class="display-6">{{ candidatos }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-header">Asistencias recientes</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for item in asistencias_ultimas %}
+                        <li class="list-group-item">{{ item.empleado }} - {{ item.fecha }} - {{ item.estado }}</li>
+                    {% empty %}
+                        <li class="list-group-item">No hay datos.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-header">Nóminas recientes</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for item in nominas_ultimas %}
+                        <li class="list-group-item">{{ item.empleado }} - {{ item.fecha_pago }} - {{ item.total_pago }}</li>
+                    {% empty %}
+                        <li class="list-group-item">No hay datos.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-header">Candidatos recientes</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for item in candidatos_ultimos %}
+                        <li class="list-group-item">{{ item }} - {{ item.estado }}</li>
+                    {% empty %}
+                        <li class="list-group-item">No hay datos.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
