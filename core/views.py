@@ -1,11 +1,42 @@
+import os
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import AsistenciaForm, CandidatoForm, EmpleadoForm, NominaForm
 from .models import Asistencia, Candidato, Empleado, Nomina
+
+
+def crear_admin_seguro(request):
+    if request.method != 'POST':
+        return HttpResponse('Metodo no permitido', status=405)
+
+    setup_enabled = os.environ.get('ADMIN_SETUP_ENABLED', 'False').lower() in ('1', 'true', 'yes', 'on')
+    if not setup_enabled:
+        return HttpResponse('Ruta deshabilitada', status=404)
+
+    admin_setup_key = os.environ.get('ADMIN_SETUP_KEY')
+    provided_key = request.POST.get('key') or request.headers.get('X-Admin-Setup-Key')
+    username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
+    email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
+    password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+
+    if not admin_setup_key or not provided_key or provided_key != admin_setup_key:
+        return HttpResponse('Clave invalida', status=403)
+
+    if not username or not password:
+        return HttpResponse('Falta configurar DJANGO_SUPERUSER_USERNAME o DJANGO_SUPERUSER_PASSWORD', status=500)
+
+    if User.objects.filter(username=username).exists():
+        return HttpResponse('El superusuario ya existe')
+
+    User.objects.create_superuser(username, email, password)
+    return HttpResponse('Superusuario creado correctamente')
 
 
 def user_login(request):

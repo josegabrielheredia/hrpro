@@ -34,16 +34,29 @@ python manage.py runserver
 - Start Command:
   - `gunicorn hrpro.wsgi:application`
 
+> Nota: la base de datos del despliegue es independiente de tu entorno local. En producción puedes usar `ADMIN_USERNAME`/`ADMIN_EMAIL`/`ADMIN_PASSWORD` o los nombres estándar `DJANGO_SUPERUSER_USERNAME`/`DJANGO_SUPERUSER_EMAIL`/`DJANGO_SUPERUSER_PASSWORD`.
+
 ## Variables de entorno sugeridas
 ```bash
 SECRET_KEY='tu_secreto_seguro'
 DEBUG='False'
 DATABASE_URL='postgres://usuario:pass@host:puerto/dbname'
 ALLOWED_HOSTS='hrpro.onrender.com,localhost,127.0.0.1'
-ADMIN_USERNAME='josegabriel'
+ADMIN_USERNAME='admin'
 ADMIN_EMAIL='admin@example.com'
-ADMIN_PASSWORD='josegab0507W'
+ADMIN_PASSWORD='cambia-esta-clave'
+ADMIN_SETUP_ENABLED='False'
+ADMIN_SETUP_KEY='clave-larga-y-unica'
+DJANGO_SUPERUSER_USERNAME='admin'
+DJANGO_SUPERUSER_EMAIL='admin@example.com'
+DJANGO_SUPERUSER_PASSWORD='cambia-esta-clave'
 ```
+
+## Ruta temporal para crear admin en produccion
+- Endpoint: `POST /crear-admin-seguro/`
+- Enviar `key` por `form-data` o `x-www-form-urlencoded`.
+- Requiere: `ADMIN_SETUP_ENABLED=True` y `ADMIN_SETUP_KEY`.
+- Despues de usarla, volver `ADMIN_SETUP_ENABLED=False`.
 
 ## Módulos incluidos
 - Empleados
