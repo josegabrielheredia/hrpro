@@ -18,4 +18,4 @@ COPY . /app/
 
 RUN python manage.py collectstatic --noinput
 
-CMD ["gunicorn", "hrpro.wsgi:application", "--bind", "0.0.0.0:$PORT", "--workers", "3"]
+CMD gunicorn hrpro.wsgi:application --bind 0.0.0.0:$PORT --workers 3
