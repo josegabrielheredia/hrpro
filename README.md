@@ -40,6 +40,9 @@ SECRET_KEY='tu_secreto_seguro'
 DEBUG='False'
 DATABASE_URL='postgres://usuario:pass@host:puerto/dbname'
 ALLOWED_HOSTS='hrpro.onrender.com,localhost,127.0.0.1'
+ADMIN_USERNAME='josegabriel'
+ADMIN_EMAIL='admin@example.com'
+ADMIN_PASSWORD='josegab0507W'
 ```
 
 ## Módulos incluidos
